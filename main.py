@@ -23,14 +23,19 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     reply: str
-    
+
+# ✅ Endpoint de health check
+@app.get("/ping")
+async def ping():
+    return {"status": "ok", "message": "API is running"}
+
+# ✅ Endpoint principal de chat
 @app.post("/chat", response_model=ChatResponse)
 async def chat(req: ChatRequest):
-
     respuesta = client.chat.completions.create(
-        model="gpt-4.1-mini",  # Modelo económico
-        temperature=0.4,       # Bajo consumo + respuestas estables
-        max_tokens=300,        # Limita la respuesta (ahorra tokens)
+        model="gpt-4o-mini",    # ✅ Corregido el nombre del modelo
+        temperature=0.4,
+        max_tokens=300,
         messages=[
             {
                 "role": "system",
